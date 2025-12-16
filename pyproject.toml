@@ -1,21 +1,45 @@
-[project]
-name = "homework 14"
+[tool.poetry]
+name = "transactions_project"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "Mikhail Krasnoperov",email = "mikhail.krasnoperov@mail.ru"}
-]
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-]
+description = "Анализ транзакций и формирование отчетов"
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
 
+[tool.poetry.dependencies]
+python = "^3.10"
+pandas = "^2.0"
+openpyxl = "^3.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
+black = "^23.3"
+isort = "^5.12"
+flake8 = "^6.1"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["src"]
+multi_line_output = 3
+include_trailing_comma = true
 
 [tool.flake8]
 max-line-length = 88
-extend-ignore = "E203,W503"
-exclude = ".venv,__pycache__,build,dist,.idea,tests"
+extend-ignore = ["E203", "W503"]
+exclude = ".venv,build,dist"
