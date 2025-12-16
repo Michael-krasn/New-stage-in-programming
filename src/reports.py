@@ -13,7 +13,8 @@ def report_writer(filename: Optional[str] = None):
         @wraps(func)
         def wrapper(*args, **kwargs):
             result = func(*args, **kwargs)
-            name = filename or f"{func.__name__}_{datetime.now():%Y%m%d_%H%M%S}.xlsx"
+            name = (filename
+                    or f"{func.__name__}_{datetime.now():%Y%m%d_%H%M%S}.xlsx")
             result.to_excel(name, index=False)
             logging.info(f"Report saved to {name}")
             return result
