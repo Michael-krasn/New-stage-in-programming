@@ -2,29 +2,30 @@ class Product:
     def __init__(self, name: str, description: str, price: float, quantity: int):
         self.name = name
         self.description = description
-        self._price = price  # приватный атрибут
+        self.__price = price  # ✅ приватный атрибут
         self.quantity = quantity
 
     @property
     def price(self):
-        return self._price
+        """Геттер цены"""
+        return self.__price
 
     @price.setter
     def price(self, new_price):
+        """Сеттер цены с проверкой"""
         if new_price <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
-            self._price = new_price
+            self.__price = new_price
 
     @classmethod
     def new_product(cls, data: dict):
         return cls(
-            name=data.get("name"),
-            description=data.get("description"),
-            price=data.get("price"),
-            quantity=data.get("quantity")
+            name=data["name"],
+            description=data["description"],
+            price=data["price"],
+            quantity=data["quantity"],
         )
-
 
 class Category:
     _category_count = 0
