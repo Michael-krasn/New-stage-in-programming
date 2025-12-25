@@ -35,7 +35,7 @@ class Product:
         )
 
     def __str__(self):
-        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
         if not isinstance(other, Product):
@@ -58,11 +58,6 @@ class Category:
 
     def __str__(self):
         return f"{self.name}, количество продуктов: {self.product_count} шт."
-
-    @property
-    def products_list(self):
-        # Возвращаем строки для удобства
-        return [str(product) for product in self.products]
 
     def __iter__(self):
         self._index = 0
