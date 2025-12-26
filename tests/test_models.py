@@ -1,5 +1,5 @@
 import pytest
-from src.models import Product, Category, CategoryIterator
+from src.models import Product, Smartphone, LawnGrass, Category
 
 
 def test_add_product_and_get_products():
@@ -99,3 +99,68 @@ def test_category_iterator_class():
         products.append(product.name)
 
     assert products == ["Телефон", "Наушники"]
+
+
+def test_smartphone_creation():
+    phone = Smartphone(
+        "iPhone",
+        "Apple smartphone",
+        100000,
+        5,
+        efficiency=95,
+        model="15 Pro",
+        memory=256,
+        color="black"
+    )
+
+    assert phone.name == "iPhone"
+    assert phone.model == "15 Pro"
+    assert phone.memory == 256
+    assert phone.color == "black"
+    assert phone.price == 100000
+
+
+def test_lawn_grass_creation():
+    grass = LawnGrass(
+        "Газон",
+        "Зелёный газон",
+        500,
+        20,
+        country="Россия",
+        germination_period=14,
+        color="green"
+    )
+
+    assert grass.country == "Россия"
+    assert grass.germination_period == 14
+    assert grass.color == "green"
+
+
+def test_add_same_product_types():
+    phone1 = Smartphone("A", "desc", 10, 3, 90, "X", 128, "black")
+    phone2 = Smartphone("B", "desc", 10, 2, 90, "Y", 256, "white")
+
+    assert phone1 + phone2 == 5
+
+
+def test_add_different_product_types():
+    phone = Smartphone("A", "desc", 10, 3, 90, "X", 128, "black")
+    grass = LawnGrass("B", "desc", 5, 10, "Россия", 7, "green")
+
+    with pytest.raises(TypeError):
+        phone + grass
+
+
+def test_add_product_to_category():
+    category = Category("Товары", "Описание")
+    product = Product("Товар", "Описание", 100, 1)
+
+    category.add_product(product)
+    assert len(category.products) == 1
+
+
+def test_add_not_product_to_category():
+    category = Category("Товары", "Описание")
+
+    with pytest.raises(TypeError):
+        category.add_product("не продукт")
