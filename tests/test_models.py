@@ -1,5 +1,6 @@
 import pytest
-from src.models import Product, Smartphone, LawnGrass, Category
+
+from src.models import Category, LawnGrass, Product, Smartphone
 
 
 def test_add_product_and_get_products():
@@ -110,7 +111,7 @@ def test_smartphone_creation():
         efficiency=95,
         model="15 Pro",
         memory=256,
-        color="black"
+        color="black",
     )
 
     assert phone.name == "iPhone"
@@ -128,7 +129,7 @@ def test_lawn_grass_creation():
         20,
         country="Россия",
         germination_period=14,
-        color="green"
+        color="green",
     )
 
     assert grass.country == "Россия"
