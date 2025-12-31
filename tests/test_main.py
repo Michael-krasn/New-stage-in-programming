@@ -1,42 +1,132 @@
-# tests/test_main.py
-
 import pytest
-from src.main import Product, Category
+
+from src.models import Category, LawnGrass, Smartphone
+
 
 @pytest.fixture
-def sample_products():
-    p1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
-    p2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
-    p3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
-    return [p1, p2, p3]
+def smartphone1():
+    return Smartphone(
+        "Samsung Galaxy S23 Ultra",
+        "256GB, Серый цвет, 200MP камера",
+        180000.0,
+        5,
+        95.5,
+        "S23 Ultra",
+        256,
+        "Серый",
+    )
+
 
 @pytest.fixture
-def sample_category(sample_products):
-    # Сбрасываем счетчики перед созданием
-    Category.category_count = 0
-    Category.product_count = 0
-    return Category("Смартфоны", "Категория смартфонов", sample_products)
+def smartphone2():
+    return Smartphone(
+        "Iphone 15",
+        "512GB, Gray space",
+        210000.0,
+        8,
+        98.2,
+        "15",
+        512,
+        "Gray space",
+    )
 
-def test_product_initialization(sample_products):
-    p1 = sample_products[0]
-    assert p1.name == "Samsung Galaxy S23 Ultra"
-    assert p1.description == "256GB, Серый цвет, 200MP камера"
-    assert p1.price == 180000.0
-    assert p1.quantity == 5
 
-def test_category_initialization(sample_category, sample_products):
-    c = sample_category
-    assert c.name == "Смартфоны"
-    assert c.description == "Категория смартфонов"
-    assert len(c.products) == 3
-    assert c.products == sample_products
+@pytest.fixture
+def smartphone3():
+    return Smartphone(
+        "Xiaomi Redmi Note 11",
+        "1024GB, Синий",
+        31000.0,
+        14,
+        90.3,
+        "Note 11",
+        1024,
+        "Синий",
+    )
 
-def test_category_count(sample_category):
-    c2 = Category("Телевизоры", "Категория телевизоров", [Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)])
-    assert Category.category_count == 2  # 2 категории созданы
-    assert c2.category_count == 2        # у объекта тоже корректно
 
-def test_product_count(sample_category):
-    c2 = Category("Телевизоры", "Категория телевизоров", [Product("55\" QLED 4K", "Фоновая подсветка", 123000.0, 7)])
-    assert Category.product_count == 4  # 3+1 продукта всего
-    assert sample_category.product_count == 3  # у первой категории своё количество
+@pytest.fixture
+def grass1():
+    return LawnGrass(
+        "Газонная трава",
+        "Элитная трава для газона",
+        500.0,
+        20,
+        "Россия",
+        "7 дней",
+        "Зеленый",
+    )
+
+
+@pytest.fixture
+def grass2():
+    return LawnGrass(
+        "Газонная трава 2",
+        "Выносливая трава",
+        450.0,
+        15,
+        "США",
+        "5 дней",
+        "Темно-зеленый",
+    )
+
+
+def test_smartphone_creation(smartphone1):
+    assert smartphone1.name == "Samsung Galaxy S23 Ultra"
+    assert smartphone1.price == 180000.0
+    assert smartphone1.quantity == 5
+    assert smartphone1.memory == 256
+
+
+def test_lawn_grass_creation(grass1):
+    assert grass1.name == "Газонная трава"
+    assert grass1.country == "Россия"
+    assert grass1.price == 500.0
+
+
+def test_smartphone_str_returns_string(smartphone1):
+    result = str(smartphone1)
+    assert isinstance(result, str)
+    assert "Samsung" in result
+
+
+def test_lawn_grass_str_returns_string(grass1):
+    result = str(grass1)
+    assert isinstance(result, str)
+    assert "Газонная трава" in result
+
+
+def test_add_smartphones(smartphone1, smartphone2):
+    total = smartphone1 + smartphone2
+    assert total == 180000.0 * 5 + 210000.0 * 8
+
+
+def test_add_lawn_grass(grass1, grass2):
+    total = grass1 + grass2
+    assert total == 500.0 * 20 + 450.0 * 15
+
+
+def test_add_different_product_types_raises_type_error(smartphone1, grass1):
+    with pytest.raises(TypeError):
+        smartphone1 + grass1
+
+
+def test_category_add_products(smartphone1, smartphone2, smartphone3):
+    category = Category(
+        "Смартфоны",
+        "Высокотехнологичные смартфоны",
+    )
+
+    category.add_product(smartphone1)
+    category.add_product(smartphone2)
+    category.add_product(smartphone3)
+
+    assert len(category.products) == 3
+    assert smartphone1 in category.products
+
+
+def test_category_add_not_product_raises_type_error():
+    category = Category("Смартфоны", "Описание")
+
+    with pytest.raises(TypeError):
+        category.add_product("Not a product")
