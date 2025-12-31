@@ -38,32 +38,22 @@ def test_product_add_same_type():
 
 def test_product_add_different_type():
     product = Product("Товар", "Описание", 100, 1)
-    phone = Smartphone(
-        "iPhone", "Описание", 1000, 1, 90, "15 Pro", "256GB", "Gray"
-    )
+    phone = Smartphone("iPhone", "Описание", 1000, 1, 90, "15 Pro", "256GB", "Gray")
 
     with pytest.raises(TypeError):
         product.add(phone)
 
 
 def test_smartphone_add():
-    s1 = Smartphone(
-        "iPhone", "Описание", 1000, 1, 90, "15", "256GB", "Gray"
-    )
-    s2 = Smartphone(
-        "iPhone", "Описание", 1000, 3, 90, "15", "256GB", "Gray"
-    )
+    s1 = Smartphone("iPhone", "Описание", 1000, 1, 90, "15", "256GB", "Gray")
+    s2 = Smartphone("iPhone", "Описание", 1000, 3, 90, "15", "256GB", "Gray")
 
     assert s1.add(s2) == 4
 
 
 def test_lawn_grass_add():
-    g1 = LawnGrass(
-        "Трава", "Описание", 50, 5, "RU", 10, "Зелёный"
-    )
-    g2 = LawnGrass(
-        "Трава", "Описание", 50, 3, "RU", 10, "Зелёный"
-    )
+    g1 = LawnGrass("Трава", "Описание", 50, 5, "RU", 10, "Зелёный")
+    g2 = LawnGrass("Трава", "Описание", 50, 3, "RU", 10, "Зелёный")
 
     assert g1.add(g2) == 8
 

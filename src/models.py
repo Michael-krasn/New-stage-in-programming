@@ -66,6 +66,11 @@ class Smartphone(Product):
             raise TypeError("Можно складывать только смартфоны")
         return self.quantity + other.quantity
 
+    def __add__(self, other):
+        if type(self) is not type(other):
+            raise TypeError("Нельзя складывать товары разных типов")
+        return self.price * self.quantity + other.price * other.quantity
+
 
 class LawnGrass(Product):
     def __init__(
@@ -80,6 +85,11 @@ class LawnGrass(Product):
         if type(self) is not type(other):
             raise TypeError("Можно складывать только газонную траву")
         return self.quantity + other.quantity
+
+    def __add__(self, other):
+        if type(self) is not type(other):
+            raise TypeError("Нельзя складывать товары разных типов")
+        return self.price * self.quantity + other.price * other.quantity
 
 
 class CountableItem(ABC):
