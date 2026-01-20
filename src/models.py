@@ -29,6 +29,9 @@ class LoggerMixin:
 
 class Product(LoggerMixin, BaseProduct):
     def __init__(self, name, description, price, quantity=0):
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
         self.__price = None
         super().__init__(name, description, price, quantity)
 
@@ -109,6 +112,13 @@ class Category(CountableItem):
 
         Category.category_count += 1
         Category.product_count += sum(p.quantity for p in self.products)
+
+    def average_price(self):
+        try:
+            total_price = sum(p.price for p in self.products)
+            return total_price / len(self.products)
+        except ZeroDivisionError:
+            return 0
 
     def add_product(self, product):
         if not isinstance(product, Product):
